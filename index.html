@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy Book Advisor</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            background-image: url('./beach-sunset.jpg');
+            background-size: cover;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: transparent;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .form label {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .form select, .form textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 5px solid white;
+            border-radius: 5px;
+            width: 100%;
+            background-color: lightgray;
+            opacity: 60%;
+        }
+        
+        .form button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .form button[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: lightgray;
+            opacity: 60%;
+        }
+        
+        .result:hover {
+            background-color: #e9e9e9;
+        }
+        .submit{
+            background-color: whitesmoke;
+            color: black;
+            font-size: large;
+        }
+        .submit:hover{
+            background-color: lightgrey;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Holy Book Advisor</h1>
+        </div>
+        <form class="form" id="advice-form" action="/api/advice" method="post">
+            <label for="book">Select a holy book:</label>
+            <select id="book" name="book">
+                <option value="bible">Bible</option>
+                <option value="bhagavadGita">Bhagavad Gita</option>
+                <option value="guruGranthSahib">Guru Granth Sahib</option>
+                <option value="tripitaka">The Tripitaka</option>
+            </select>
+            <br><br>
+            <label for="problem">Enter your problem:</label>
+            <textarea id="problem" name="problem"></textarea>
+            <br><br>
+            <button class="submit" id="submit"  >Get Advice</button>
+        </form>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('advice-form');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const book = document.getElementById('book').value;
+            const problem = document.getElementById('problem').value;
+            document.getElementById('result').innerText = 'Loading...';
+
+            try {
+                const response = await fetch('/api/advice', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ book, problem })
+                });
+                const result = await response.text();
+                resultDiv.innerText = result;
+                document.getElementById('result').innerText = result;
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('result').innerText = `Error: ${error.message}`;
+            }
+        });
+    </script>
+</body>
+</html>
