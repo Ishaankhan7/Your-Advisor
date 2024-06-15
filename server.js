@@ -24,7 +24,7 @@ app.post('/api/advice', async (req, res) => {
     res.send(result);
   } catch (error) {
     console.error(error);
-    res.status(500).send(`Error: ${error.message}`);
+    res.status(500).send('Relod The Page');
   }
 });
 
