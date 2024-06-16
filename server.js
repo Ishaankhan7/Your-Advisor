@@ -24,7 +24,7 @@ app.use(express.static(__dirname, {
     try {
       userCount++;
       const result = await run(book, problem);
-      console.log(`API call made by ${name}`); 
+      console.log(`API call made by ${name},Problem: ${problem}`); 
       console.log(`Total users: ${userCount}`);
       res.send(result);
     } catch (error) {
