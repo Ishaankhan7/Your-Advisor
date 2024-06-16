@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Advisor</title>
+    <title>Holy Book Advisor</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
     <link rel="icon" type="image/x-icon" href="icon.png">
     <style>
@@ -91,6 +91,19 @@
         .submit:hover{
             background-color: lightgrey;
         }
+        #name {
+            padding: 10px;
+            font-size: 16px;
+            border: 5px solid white;
+            border-radius: 5px;
+            width: 97%;
+            background-color: lightgray;
+          }
+          
+          #name:focus {
+            border-color: #aaa;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          }
     </style>
 </head>
 <body>
@@ -99,6 +112,9 @@
             <h1>Holy Book Advisor</h1>
         </div>
         <form class="form" id="advice-form" action="/api/advice" method="post">
+            <label for="name">Enter your name:</label>
+            <input type="text" id="name" name="name" required  placeholder="Enter your name">
+            <br><br>
             <label for="book">Select a holy book:</label>
             <select id="book" name="book">
                 <option value="bible">Bible</option>
@@ -121,6 +137,7 @@
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const name = document.getElementById('name').value;
             const book = document.getElementById('book').value;
             const problem = document.getElementById('problem').value;
             document.getElementById('result').innerText = 'Loading...';
@@ -129,7 +146,7 @@
                 const response = await fetch('/api/advice', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ book, problem })
+                    body: JSON.stringify({name, book, problem })
                 });
                 const result = await response.text();
                 resultDiv.innerText = result;
