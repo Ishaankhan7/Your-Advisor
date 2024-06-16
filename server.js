@@ -17,16 +17,21 @@ app.use(express.static(__dirname, {
     }
   }));
 
-app.post('/api/advice', async (req, res) => {
-  const { book, problem } = req.body;
-  try {
-    const result = await run(book, problem);
-    res.send(result);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Relod The Page');
-  }
-});
+  let userCount = 0;
+
+  app.post('/api/advice', async (req, res) => {
+    const { book, problem, name } = req.body;
+    try {
+      userCount++;
+      const result = await run(book, problem);
+      console.log(`API call made by ${name}`); 
+      console.log(`Total users: ${userCount}`);
+      res.send(result);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Reload the page..');
+    }
+  });
 
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
